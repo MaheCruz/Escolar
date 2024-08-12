@@ -51,6 +51,15 @@ namespace Escolar.Docentes
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvMateria;
 
         /// <summary>
+        /// lblFechaHora control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblFechaHora;
+
+        /// <summary>
         /// btnCargarAlumnos control.
         /// </summary>
         /// <remarks>
@@ -85,5 +94,23 @@ namespace Escolar.Docentes
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnGuardarAsistencia;
+
+        /// <summary>
+        /// gvHistorialAsistencia control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvHistorialAsistencia;
+
+        /// <summary>
+        /// btnGenerarPDF control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnGenerarPDF;
     }
 }

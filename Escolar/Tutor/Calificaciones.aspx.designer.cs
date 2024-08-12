@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Escolar.Directivos
+namespace Escolar.Tutor
 {
 
 
-    public partial class Asistencia
+    public partial class Calificaciones
     {
     }
 }

@@ -115,6 +115,12 @@
                     <asp:RequiredFieldValidator ID="rfvMateria" runat="server" ControlToValidate="ddlMateria" InitialValue="" ErrorMessage="La materia es obligatoria." CssClass="validation-message" />
                 </td>
             </tr>
+            <tr>
+                <td>Fecha y Hora:</td>
+                <td>
+                    <asp:Label ID="lblFechaHora" runat="server" Text=""></asp:Label>
+                </td>
+            </tr>
         </table>
         <asp:Button ID="btnCargarAlumnos" runat="server" Text="Cargar Alumnos" CssClass="btn" OnClick="btnCargarAlumnos_Click" />
         <asp:Label ID="lblCargarAlumnos" runat="server" CssClass="message" Text=""></asp:Label>
@@ -132,8 +138,20 @@
             </asp:GridView>
         </div>
         <asp:Button ID="btnGuardarAsistencia" runat="server" Text="Guardar Asistencia" CssClass="btn" OnClick="btnGuardarAsistencia_Click" />
+        <div class="gridview-container">
+            <h3>Historial de Asistencia</h3>
+            <asp:GridView ID="gvHistorialAsistencia" runat="server" AutoGenerateColumns="False" ShowHeaderWhenEmpty="true" EmptyDataText="No hay registros de asistencia">
+                <Columns>
+                    <asp:BoundField DataField="Nombre del Estudiante" HeaderText="Nombre del Estudiante" />
+                    <%-- Columnas se agregan dinámicamente en el código detrás --%>
+                    <asp:BoundField DataField="% Asistencia" HeaderText="% Asistencia" />
+                </Columns>
+            </asp:GridView>
+        </div>
+        <asp:Button ID="btnGenerarPDF" runat="server" Text="Generar Reporte PDF" CssClass="btn" OnClick="btnGenerarPDF_Click" />
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </asp:Content>
+
 
