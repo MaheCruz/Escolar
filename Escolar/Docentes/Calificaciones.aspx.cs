@@ -56,6 +56,24 @@ namespace Escolar.Docentes
                 LoadCalificaciones(idMateria, gvCalificaciones);
             }
         }
+        private string GetMateriaIdFromGridView(GridView gvCalificaciones)
+        {
+            // El GridView está dentro de un RepeaterItem, necesitamos obtener ese item
+            RepeaterItem repeaterItem = (RepeaterItem)gvCalificaciones.NamingContainer;
+
+            // Encontramos el HiddenField que contiene el idMateria
+            HiddenField hfMateriaId = (HiddenField)repeaterItem.FindControl("hfMateriaId");
+
+            // Validamos si el HiddenField se encontró
+            if (hfMateriaId != null)
+            {
+                return hfMateriaId.Value; // Devolvemos el valor del HiddenField
+            }
+            else
+            {
+                throw new Exception("No se encontró el HiddenField hfMateriaId. Asegúrate de que existe en el Repeater y tiene el ID correcto.");
+            }
+        }
 
         private void LoadCalificaciones(string idMateria, GridView gvCalificaciones)
         {
@@ -76,16 +94,6 @@ namespace Escolar.Docentes
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
-                // Depurar datos en consola
-                foreach (DataRow row in dt.Rows)
-                {
-                    Console.WriteLine("Estudiante: " + row["nombreCompleto"]);
-                    Console.WriteLine("Calificación 1: " + row["calificacion1"]);
-                    Console.WriteLine("Calificación 2: " + row["calificacion2"]);
-                    Console.WriteLine("Calificación 3: " + row["calificacion3"]);
-                    Console.WriteLine("Promedio: " + row["promedioMateria"]);
-                }
-
                 gvCalificaciones.DataSource = dt;
                 gvCalificaciones.DataBind();
             }
@@ -102,9 +110,17 @@ namespace Escolar.Docentes
         {
             GridView gvCalificaciones = (GridView)sender;
             string idCalificacion = gvCalificaciones.DataKeys[e.RowIndex].Value.ToString();
+
+            // Verificación y conversión de las calificaciones
             string calificacion1 = ((TextBox)gvCalificaciones.Rows[e.RowIndex].FindControl("txtCalificacion1")).Text;
             string calificacion2 = ((TextBox)gvCalificaciones.Rows[e.RowIndex].FindControl("txtCalificacion2")).Text;
             string calificacion3 = ((TextBox)gvCalificaciones.Rows[e.RowIndex].FindControl("txtCalificacion3")).Text;
+
+            if (!EsCalificacionValida(calificacion1) || !EsCalificacionValida(calificacion2) || !EsCalificacionValida(calificacion3))
+            {
+                Response.Write("<script>alert('Las calificaciones deben ser numéricas y no mayores a 10.');</script>");
+                return;
+            }
 
             decimal? cal1 = string.IsNullOrWhiteSpace(calificacion1) ? (decimal?)null : decimal.Parse(calificacion1);
             decimal? cal2 = string.IsNullOrWhiteSpace(calificacion2) ? (decimal?)null : decimal.Parse(calificacion2);
@@ -115,12 +131,12 @@ namespace Escolar.Docentes
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string queryUpdate = @"
-                    UPDATE calificacion 
-                    SET calificacion1 = @calificacion1, 
-                        calificacion2 = @calificacion2, 
-                        calificacion3 = @calificacion3, 
-                        promedioMateria = @promedioMateria
-                    WHERE idCalificacion = @idCalificacion";
+            UPDATE calificacion 
+            SET calificacion1 = @calificacion1, 
+                calificacion2 = @calificacion2, 
+                calificacion3 = @calificacion3, 
+                promedioMateria = @promedioMateria
+            WHERE idCalificacion = @idCalificacion";
 
                 SqlCommand cmdUpdate = new SqlCommand(queryUpdate, con);
                 cmdUpdate.Parameters.AddWithValue("@calificacion1", (object)cal1 ?? DBNull.Value);
@@ -145,161 +161,57 @@ namespace Escolar.Docentes
             LoadCalificaciones(GetMateriaIdFromGridView(gvCalificaciones), gvCalificaciones);
         }
 
-        //protected void btnAgregarCalificacion_Click(object sender, EventArgs e)
-        //{
-        //    string idMateria = ((Button)sender).CommandArgument;
-        //    // Aquí puedes agregar lógica para mostrar un formulario modal o un cuadro de diálogo para seleccionar un estudiante y añadir una calificación
-        //    // También puedes redirigir a una página de inserción de calificaciones
-        //}
-
-        //protected void btnGenerarExcel_Click(object sender, EventArgs e)
-        //{
-        //    string idMateria = ((Button)sender).CommandArgument;
-        //    GridView gvCalificaciones = GetGridViewByMateriaId(idMateria);
-        //    if (gvCalificaciones != null)
-        //    {
-        //        ExportToExcel(gvCalificaciones, idMateria);
-        //    }
-        //    else
-        //    {
-        //        // Puedes agregar un mensaje de error para indicar que el GridView no se encontró
-        //        Response.Write("<script>alert('GridView no encontrado.');</script>");
-        //    }
-        //}
-
-        //private void ExportToPDF(GridView gv, string nombreMateria)
-        //{
-        //    using (MemoryStream memoryStream = new MemoryStream())
-        //    {
-        //        Document document = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
-        //        PdfWriter writer = PdfWriter.GetInstance(document, memoryStream);
-
-        //        try
-        //        {
-        //            document.Open();
-
-        //            // Agregar el encabezado
-        //            document.Add(new Paragraph("Reporte de Calificaciones"));
-        //            document.Add(new Paragraph("Materia: " + nombreMateria));
-        //            document.Add(new Paragraph("Generado por: " + User.Identity.Name));
-        //            document.Add(new Paragraph("Fecha: " + DateTime.Now.ToString()));
-        //            document.Add(new Paragraph(" ")); // Espacio
-
-        //            PdfPTable pdfTable = new PdfPTable(gv.HeaderRow.Cells.Count - 1); // Excluye la columna de Acciones
-
-        //            // Agregar encabezados al PDF
-        //            foreach (TableCell headerCell in gv.HeaderRow.Cells)
-        //            {
-        //                if (headerCell.Text != "Acciones")
-        //                {
-        //                    PdfPCell pdfCell = new PdfPCell(new Phrase(headerCell.Text));
-        //                    pdfTable.AddCell(pdfCell);
-        //                }
-        //            }
-
-        //            // Agregar filas al PDF
-        //            foreach (GridViewRow gridViewRow in gv.Rows)
-        //            {
-        //                for (int i = 0; i < gridViewRow.Cells.Count - 1; i++) // Excluye la última columna (Acciones)
-        //                {
-        //                    string cellText = gridViewRow.Cells[i].Text.Trim();
-        //                    Console.WriteLine($"Cell Text[{i}]: {cellText}"); // Depurar
-        //                    PdfPCell pdfCell = new PdfPCell(new Phrase(string.IsNullOrWhiteSpace(cellText) ? " " : cellText));
-        //                    pdfTable.AddCell(pdfCell);
-        //                }
-        //            }
-
-        //            document.Add(pdfTable);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            // Manejo de errores
-        //            Console.WriteLine("Error al generar PDF: " + ex.Message);
-        //        }
-        //        finally
-        //        {
-        //            document.Close();
-        //        }
-
-        //        Response.ContentType = "application/pdf";
-        //        Response.AddHeader("content-disposition", "attachment;filename=" + nombreMateria + "_Calificaciones.pdf");
-        //        Response.Cache.SetCacheability(HttpCacheability.NoCache);
-        //        Response.BinaryWrite(memoryStream.ToArray());
-        //        Response.End();
-        //    }
-        //}
-
-
-
-
-        private string GetMateriaIdFromGridView(GridView gvCalificaciones)
+        protected void btnAgregarCalificacion_Click(object sender, EventArgs e)
         {
-            RepeaterItem repeaterItem = (RepeaterItem)gvCalificaciones.NamingContainer;
-            HiddenField hfMateriaId = (HiddenField)repeaterItem.FindControl("hfMateriaId");
+            string idMateria = ((Button)sender).CommandArgument;
+            // Aquí puedes agregar lógica para mostrar un formulario modal o un cuadro de diálogo para seleccionar un estudiante y añadir una calificación
+            // También puedes redirigir a una página de inserción de calificaciones
+        }
 
-            if (hfMateriaId != null)
+        protected void btnGenerarExcel_Click(object sender, EventArgs e)
+        {
+            string idMateria = ((Button)sender).CommandArgument;
+            string nombreMateria = GetNombreMateria(idMateria);
+            if (!string.IsNullOrEmpty(nombreMateria))
             {
-                return hfMateriaId.Value;
-            }
-            else
-            {
-                throw new Exception("No se encontró el HiddenField hfMateriaId. Asegúrate de que existe en el Repeater y tiene el ID correcto.");
+                ExportToExcel(idMateria, nombreMateria);
             }
         }
 
-
-
-        private GridView GetGridViewByMateriaId(string idMateria)
+        protected void btnGenerarPDF_Click(object sender, EventArgs e)
         {
-            foreach (RepeaterItem item in rptMaterias.Items)
+            string idMateria = ((Button)sender).CommandArgument;
+            string nombreMateria = GetNombreMateria(idMateria);
+            if (!string.IsNullOrEmpty(nombreMateria))
             {
-                HiddenField hfMateriaId = (HiddenField)item.FindControl("hfMateriaId");
-                if (hfMateriaId != null && hfMateriaId.Value == idMateria)
-                {
-                    return (GridView)item.FindControl("gvCalificaciones");
-                }
+                ExportToPDF(idMateria, nombreMateria);
             }
-            return null;
         }
-        //private void ExportToExcel(GridView gv, string nombreMateria)
-        //{
-        //    using (XLWorkbook wb = new XLWorkbook())
-        //    {
-        //        // Crear DataTable desde GridView
-        //        DataTable dt = new DataTable();
-        //        foreach (TableCell cell in gv.HeaderRow.Cells)
-        //        {
-        //            dt.Columns.Add(cell.Text);
-        //        }
-        //        foreach (GridViewRow row in gv.Rows)
-        //        {
-        //            DataRow dr = dt.NewRow();
-        //            for (int i = 0; i < row.Cells.Count; i++)
-        //            {
-        //                dr[i] = row.Cells[i].Text.Trim();
-        //            }
-        //            dt.Rows.Add(dr);
-        //        }
 
-        //        // Añadir DataTable a Workbook
-        //        wb.Worksheets.Add(dt, nombreMateria);
+        private string GetNombreMateria(string idMateria)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT nombre FROM materia WHERE idMateria = @idMateria";
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@idMateria", idMateria);
 
-        //        // Configuración de la respuesta HTTP para descarga del archivo
-        //        Response.Clear();
-        //        Response.Buffer = true;
-        //        Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-        //        Response.AddHeader("content-disposition", $"attachment;filename={nombreMateria}_Calificaciones.xlsx");
-        //        using (MemoryStream memoryStream = new MemoryStream())
-        //        {
-        //            wb.SaveAs(memoryStream);
-        //            memoryStream.WriteTo(Response.OutputStream);
-        //            Response.Flush();
-        //            Response.End();
-        //        }
-        //    }
-        //}
+                con.Open();
+                return cmd.ExecuteScalar()?.ToString();
+            }
+        }
 
-      private void ExportToPDF(GridView gv, string nombreMateria)
+        private bool EsCalificacionValida(string calificacion)
+        {
+            if (string.IsNullOrWhiteSpace(calificacion)) return true; // Campo vacío permitido
+            if (decimal.TryParse(calificacion, out decimal cal))
+            {
+                return cal >= 0 && cal <= 10;
+            }
+            return false; // No es numérico
+        }
+
+        private void ExportToPDF(string idMateria, string nombreMateria)
         {
             using (MemoryStream memoryStream = new MemoryStream())
             {
@@ -311,33 +223,50 @@ namespace Escolar.Docentes
                     document.Open();
 
                     // Agregar el encabezado
-                    document.Add(new Paragraph("Reporte de Calificaciones"));
+                    document.Add(new Paragraph("Reporte de calificaciones " + nombreMateria));
                     document.Add(new Paragraph("Materia: " + nombreMateria));
                     document.Add(new Paragraph("Generado por: " + User.Identity.Name));
                     document.Add(new Paragraph("Fecha: " + DateTime.Now.ToString()));
                     document.Add(new Paragraph(" ")); // Espacio
 
-                    PdfPTable pdfTable = new PdfPTable(gv.HeaderRow.Cells.Count - 1); // Excluye la columna de Acciones
+                    // Crear la tabla PDF con las columnas necesarias
+                    PdfPTable pdfTable = new PdfPTable(5); // Número de columnas: Nombre + 3 parciales + promedio
 
-                    // Agregar encabezados al PDF
-                    foreach (TableCell headerCell in gv.HeaderRow.Cells)
-                    {
-                        if (headerCell.Text != "Acciones")
-                        {
-                            PdfPCell pdfCell = new PdfPCell(new Phrase(headerCell.Text));
-                            pdfTable.AddCell(pdfCell);
-                        }
-                    }
+                    // Agregar los encabezados de las columnas
+                    pdfTable.AddCell("Nombre del Estudiante");
+                    pdfTable.AddCell("Calificación 1er Parcial");
+                    pdfTable.AddCell("Calificación 2do Parcial");
+                    pdfTable.AddCell("Calificación 3er Parcial");
+                    pdfTable.AddCell("Promedio General");
 
-                    // Agregar filas al PDF
-                    foreach (GridViewRow gridViewRow in gv.Rows)
+                    // Consultar la base de datos para obtener las calificaciones
+                    using (SqlConnection con = new SqlConnection(connectionString))
                     {
-                        for (int i = 0; i < gridViewRow.Cells.Count - 1; i++) // Excluye la última columna (Acciones)
+                        string queryCalificaciones = @"
+                        SELECT 
+                            CONCAT(e.nombre, ' ', e.paterno, ' ', e.materno) AS nombreCompleto,
+                            c.calificacion1, c.calificacion2, c.calificacion3, c.promedioMateria
+                        FROM calificacion c
+                        JOIN estudiante e ON c.idEstudiante = e.matricula
+                        WHERE c.idMateria = @idMateria";
+
+                        SqlCommand cmdCalificaciones = new SqlCommand(queryCalificaciones, con);
+                        cmdCalificaciones.Parameters.AddWithValue("@idMateria", idMateria);
+
+                        con.Open();
+                        SqlDataReader reader = cmdCalificaciones.ExecuteReader();
+
+                        // Agregar las filas de datos al PDF
+                        while (reader.Read())
                         {
-                            string cellText = gridViewRow.Cells[i].Text.Trim();
-                            PdfPCell pdfCell = new PdfPCell(new Phrase(string.IsNullOrWhiteSpace(cellText) ? " " : cellText));
-                            pdfTable.AddCell(pdfCell);
+                            pdfTable.AddCell(reader["nombreCompleto"].ToString());
+                            pdfTable.AddCell(reader["calificacion1"] != DBNull.Value ? reader["calificacion1"].ToString() : "N/A");
+                            pdfTable.AddCell(reader["calificacion2"] != DBNull.Value ? reader["calificacion2"].ToString() : "N/A");
+                            pdfTable.AddCell(reader["calificacion3"] != DBNull.Value ? reader["calificacion3"].ToString() : "N/A");
+                            pdfTable.AddCell(reader["promedioMateria"] != DBNull.Value ? reader["promedioMateria"].ToString() : "N/A");
                         }
+
+                        reader.Close();
                     }
 
                     document.Add(pdfTable);
@@ -360,6 +289,67 @@ namespace Escolar.Docentes
             }
         }
 
+        private void ExportToExcel(string idMateria, string nombreMateria)
+        {
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                // Crear DataTable
+                DataTable dt = new DataTable();
+                dt.Columns.Add("Nombre del Estudiante");
+                dt.Columns.Add("Calificación 1er Parcial");
+                dt.Columns.Add("Calificación 2do Parcial");
+                dt.Columns.Add("Calificación 3er Parcial");
+                dt.Columns.Add("Promedio");
+
+                // Consultar la base de datos para obtener las calificaciones
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    string queryCalificaciones = @"
+                SELECT 
+                    CONCAT(e.nombre, ' ', e.paterno, ' ', e.materno) AS nombreCompleto,
+                    c.calificacion1, c.calificacion2, c.calificacion3, c.promedioMateria
+                FROM calificacion c
+                JOIN estudiante e ON c.idEstudiante = e.matricula
+                WHERE c.idMateria = @idMateria";
+
+                    SqlCommand cmdCalificaciones = new SqlCommand(queryCalificaciones, con);
+                    cmdCalificaciones.Parameters.AddWithValue("@idMateria", idMateria);
+
+                    con.Open();
+                    SqlDataReader reader = cmdCalificaciones.ExecuteReader();
+
+                    // Llenar el DataTable con los datos obtenidos
+                    while (reader.Read())
+                    {
+                        DataRow dr = dt.NewRow();
+                        dr["Nombre del Estudiante"] = reader["nombreCompleto"].ToString();
+                        dr["Calificación 1er Parcial"] = reader["calificacion1"] != DBNull.Value ? reader["calificacion1"].ToString() : "N/A";
+                        dr["Calificación 2do Parcial"] = reader["calificacion2"] != DBNull.Value ? reader["calificacion2"].ToString() : "N/A";
+                        dr["Calificación 3er Parcial"] = reader["calificacion3"] != DBNull.Value ? reader["calificacion3"].ToString() : "N/A";
+                        dr["Promedio"] = reader["promedioMateria"] != DBNull.Value ? reader["promedioMateria"].ToString() : "N/A";
+                        dt.Rows.Add(dr);
+                    }
+
+                    reader.Close();
+                }
+
+                // Añadir DataTable a Workbook
+                var ws = wb.Worksheets.Add(dt, "Calificaciones");
+
+                // Configuración de la respuesta HTTP para descarga del archivo
+                Response.Clear();
+                Response.Buffer = true;
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                Response.AddHeader("content-disposition", $"attachment;filename={nombreMateria}_Calificaciones.xlsx");
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    wb.SaveAs(memoryStream);
+                    memoryStream.WriteTo(Response.OutputStream);
+                    Response.Flush();
+                    Response.End();
+                }
+            }
+        }
 
     }
 }

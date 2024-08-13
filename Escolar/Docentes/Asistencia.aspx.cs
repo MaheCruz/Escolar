@@ -1,8 +1,12 @@
-﻿using System;
+﻿using iTextSharp.text.pdf;
+using iTextSharp.text;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -210,9 +214,67 @@ namespace Escolar.Docentes
             LoadHistorialAsistencia();
         }
 
-        protected void btnGenerarPDF_Click(object sender, EventArgs e)
-        {
+protected void btnGenerarPDF_Click(object sender, EventArgs e)
+    {
+        // Configurar el documento PDF
+        Document pdfDoc = new Document(PageSize.A4, 25, 25, 30, 30);
+        MemoryStream ms = new MemoryStream();
+        PdfWriter writer = PdfWriter.GetInstance(pdfDoc, ms);
 
+        pdfDoc.Open();
+
+        // Agregar título
+        Font titleFont = FontFactory.GetFont("Arial", 16, Font.BOLD);
+        Paragraph title = new Paragraph("Reporte de Asistencia", titleFont);
+        title.Alignment = Element.ALIGN_CENTER;
+        pdfDoc.Add(title);
+
+        // Agregar información de la materia
+        pdfDoc.Add(new Paragraph("Materia: " + ddlMateria.SelectedItem.Text));
+        pdfDoc.Add(new Paragraph("Fecha: " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")));
+        pdfDoc.Add(new Paragraph(" ")); // Espacio
+
+        // Crear tabla con el mismo número de columnas que el GridView
+        PdfPTable table = new PdfPTable(gvHistorialAsistencia.Columns.Count);
+        table.WidthPercentage = 100;
+
+        // Configurar las cabeceras de la tabla
+        foreach (DataControlField column in gvHistorialAsistencia.Columns)
+        {
+            PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText));
+            cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+            table.AddCell(cell);
         }
+
+        // Agregar las filas de datos del GridView a la tabla PDF
+        foreach (GridViewRow row in gvHistorialAsistencia.Rows)
+        {
+            foreach (TableCell cell in row.Cells)
+            {
+                string cellText = cell.Text;
+                if (cell.Controls.Count > 0 && cell.Controls[0] is CheckBox)
+                {
+                    CheckBox chk = (CheckBox)cell.Controls[0];
+                    cellText = chk.Checked ? "Presente" : "Ausente";
+                }
+
+                table.AddCell(new Phrase(cellText));
+            }
+        }
+
+        pdfDoc.Add(table);
+
+        // Cerrar el documento
+        pdfDoc.Close();
+
+        // Enviar el PDF al navegador
+        Response.ContentType = "application/pdf";
+        Response.AddHeader("content-disposition", "attachment;filename=ReporteAsistencia.pdf");
+        Response.Cache.SetCacheability(HttpCacheability.NoCache);
+        Response.OutputStream.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
+        Response.OutputStream.Flush();
+        Response.End();
     }
+
+}
 }

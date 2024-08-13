@@ -1,5 +1,5 @@
 ﻿
-<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Calificaciones.aspx.cs" Inherits="Escolar.Docentes.Calificaciones" %>
+<%@ Page Title="CALIFICACIONES" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Calificaciones.aspx.cs" Inherits="Escolar.Docentes.Calificaciones" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 <style>
@@ -93,10 +93,9 @@
                 </Columns>
             </asp:GridView>
             <div class="actions" style="margin-top: 10px;">
-                <%--<asp:Button ID="btnAgregarCalificacion" runat="server" Text="Añadir Calificación" CssClass="btn btn-success" CommandName="Add" CommandArgument='<%# Eval("idMateria") %>' />--%>
-<%--                <asp:Button ID="btnGenerarExcel" runat="server" Text="Generar Reporte Excel" CssClass="btn btn-primary" CommandName="GenerateExcel" CommandArgument='<%# Eval("idMateria") %>' OnClick="btnGenerarExcel_Click" />--%>
-                <asp:Button ID="btnGenerarPDF" runat="server" Text="Generar Reporte PDF" CssClass="btn btn-danger" CommandName="GeneratePDF" CommandArgument='<%# Eval("idMateria") %>' OnClick="btnGenerarPDF_Click" />    
-            </div>
+               <asp:Button ID="btnGenerarExcel" runat="server" Text="Generar Reporte Excel" CssClass="btn btn-primary" CommandName="GenerateExcel" CommandArgument='<%# Eval("idMateria") %>' OnClick="btnGenerarExcel_Click" />
+               <asp:Button ID="btnGenerarPDF" runat="server" Text="Generar Reporte PDF" CssClass="btn btn-danger" CommandName="GeneratePDF" CommandArgument='<%# Eval("idMateria") %>' OnClick="btnGenerarPDF_Click" />    
+                </div>
             <hr />
         </div>
     </ItemTemplate>

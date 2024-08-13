@@ -141,6 +141,7 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web.DataVisualization" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
@@ -282,11 +283,14 @@
     <Content Include="Directivos\CRUDtutor.aspx" />
     <Content Include="Directivos\Dashboard.aspx" />
     <Content Include="Directivos\Reporte.aspx" />
+    <Content Include="Directivos\ReporteAsist.aspx" />
+    <Content Include="Directivos\ReporteCalif.aspx" />
     <Content Include="Directivos\Rol.aspx" />
     <Content Include="Docentes\Asistencia.aspx" />
     <Content Include="Docentes\Calificaciones.aspx" />
     <Content Include="Docentes\Dashboard.aspx" />
     <Content Include="Docentes\Reporte.aspx" />
+    <Content Include="Docentes\ReporteAsist.aspx" />
     <Content Include="Estudiantes\Dashboard.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -543,6 +547,20 @@
     <Compile Include="Directivos\Reporte.aspx.designer.cs">
       <DependentUpon>Reporte.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Directivos\ReporteAsist.aspx.cs">
+      <DependentUpon>ReporteAsist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Directivos\ReporteAsist.aspx.designer.cs">
+      <DependentUpon>ReporteAsist.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Directivos\ReporteCalif.aspx.cs">
+      <DependentUpon>ReporteCalif.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Directivos\ReporteCalif.aspx.designer.cs">
+      <DependentUpon>ReporteCalif.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Directivos\Rol.aspx.cs">
       <DependentUpon>Rol.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -577,6 +595,13 @@
     </Compile>
     <Compile Include="Docentes\Reporte.aspx.designer.cs">
       <DependentUpon>Reporte.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Docentes\ReporteAsist.aspx.cs">
+      <DependentUpon>ReporteAsist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Docentes\ReporteAsist.aspx.designer.cs">
+      <DependentUpon>ReporteAsist.aspx</DependentUpon>
     </Compile>
     <Compile Include="Estudiantes\Dashboard.aspx.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
