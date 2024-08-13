@@ -33,12 +33,30 @@ namespace Escolar.Directivos
         protected global::System.Web.UI.WebControls.Label lblTotalDocentes;
 
         /// <summary>
-        /// lblTotalMaterias control.
+        /// lblTotalTutores control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTotalMaterias;
+        protected global::System.Web.UI.WebControls.Label lblTotalTutores;
+
+        /// <summary>
+        /// lblPromedioGeneral control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPromedioGeneral;
+
+        /// <summary>
+        /// lblPromedioAsistencias control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPromedioAsistencias;
     }
 }

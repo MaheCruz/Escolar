@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
-using System.Web.Services;
-using System.Web.Script.Serialization;
 
 namespace Escolar.Directivos
 {
@@ -12,91 +10,62 @@ namespace Escolar.Directivos
         {
             if (!IsPostBack)
             {
-                CargarDatos();
+                // Cargar los totales y los promedios
+                CargarTotalesYPromedios();
+                EjecutarProcedimientoCalcularPromedio();
             }
         }
 
-        private void CargarDatos()
+        private void EjecutarProcedimientoCalcularPromedio()
         {
-            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                conn.Open();
-
-                // Total de estudiantes
-                string queryEstudiantes = "SELECT COUNT(*) FROM estudiante";
-                using (SqlCommand cmd = new SqlCommand(queryEstudiantes, conn))
+                try
                 {
-                    lblTotalEstudiantes.Text = cmd.ExecuteScalar().ToString();
+                    connection.Open();
+                    SqlCommand command = new SqlCommand("CalcularPromedioGeneralPorEstudiante", connection);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    command.ExecuteNonQuery();
                 }
-
-                // Total de docentes
-                string queryDocentes = "SELECT COUNT(*) FROM docente";
-                using (SqlCommand cmd = new SqlCommand(queryDocentes, conn))
+                catch (Exception ex)
                 {
-                    lblTotalDocentes.Text = cmd.ExecuteScalar().ToString();
-                }
-
-                // Total de materias
-                string queryMaterias = "SELECT COUNT(*) FROM materia";
-                using (SqlCommand cmd = new SqlCommand(queryMaterias, conn))
-                {
-                    lblTotalMaterias.Text = cmd.ExecuteScalar().ToString();
+                    // Manejo de errores
+                    Response.Write("Error: " + ex.Message);
                 }
             }
         }
 
-        [WebMethod]
-        public static string GetEstudiantesPorGrupo()
+    private void CargarTotalesYPromedios()
         {
             string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            var labels = new List<string>();
-            var values = new List<int>();
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                conn.Open();
-                string query = "SELECT g.nombre, COUNT(e.matricula) AS cantidad FROM grupo g LEFT JOIN grupoEstudiante ge ON g.idGrupo = ge.idGrupo LEFT JOIN estudiante e ON ge.idEstudiante = e.matricula GROUP BY g.nombre";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        labels.Add(reader["nombre"].ToString());
-                        values.Add(Convert.ToInt32(reader["cantidad"]));
-                    }
-                }
+                con.Open();
+
+                // Contar estudiantes
+                SqlCommand cmdEstudiantes = new SqlCommand("SELECT COUNT(*) FROM estudiante", con);
+                lblTotalEstudiantes.Text = cmdEstudiantes.ExecuteScalar().ToString();
+
+                // Contar docentes
+                SqlCommand cmdDocentes = new SqlCommand("SELECT COUNT(*) FROM docente", con);
+                lblTotalDocentes.Text = cmdDocentes.ExecuteScalar().ToString();
+
+                // Contar tutores
+                SqlCommand cmdTutores = new SqlCommand("SELECT COUNT(*) FROM tutor", con);
+                lblTotalTutores.Text = cmdTutores.ExecuteScalar().ToString();
+
+                // Obtener promedio general de calificaciones
+                SqlCommand cmdPromedioGeneral = new SqlCommand("SELECT AVG(promGeneral) FROM estudiante", con);
+                lblPromedioGeneral.Text = Convert.ToDecimal(cmdPromedioGeneral.ExecuteScalar()).ToString("F2");
+
+                // Obtener promedio general de asistencias
+                SqlCommand cmdPromedioAsistencias = new SqlCommand("SELECT AVG(CAST(asistencia AS FLOAT)) FROM asistencia", con);
+                lblPromedioAsistencias.Text = Convert.ToDecimal(cmdPromedioAsistencias.ExecuteScalar()).ToString("F2");
             }
-
-            var result = new { labels = labels.ToArray(), values = values.ToArray() };
-            return new JavaScriptSerializer().Serialize(result);
-        }
-
-        [WebMethod]
-        public static string GetDocentesPorMateria()
-        {
-            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            var labels = new List<string>();
-            var values = new List<int>();
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                string query = "SELECT m.nombre, COUNT(d.idDocente) AS cantidad FROM materia m LEFT JOIN grupoMateria gm ON m.idMateria = gm.idMateria LEFT JOIN docente d ON gm.idDocente = d.idDocente GROUP BY m.nombre";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        labels.Add(reader["nombre"].ToString());
-                        values.Add(Convert.ToInt32(reader["cantidad"]));
-                    }
-                }
-            }
-
-            var result = new { labels = labels.ToArray(), values = values.ToArray() };
-            return new JavaScriptSerializer().Serialize(result);
         }
     }
 }
