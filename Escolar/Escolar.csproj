@@ -291,14 +291,20 @@
     <Content Include="Docentes\Dashboard.aspx" />
     <Content Include="Docentes\Reporte.aspx" />
     <Content Include="Docentes\ReporteAsist.aspx" />
+    <Content Include="Estudiantes\Calificacion.aspx" />
     <Content Include="Estudiantes\Dashboard.aspx" />
+    <Content Include="Estudiantes\Reporte.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Images\Asistencia.png" />
     <Content Include="Images\Calificaciones.png" />
+    <Content Include="Images\directivo.png" />
+    <Content Include="Images\docente.png" />
+    <Content Include="Images\estudiante.png" />
     <Content Include="Images\ReporteAsistencia.png" />
     <Content Include="Images\Reportes.png" />
-    <Content Include="ScriptsSQL\scriptEscolar.sql" />
+    <Content Include="Images\tutor.png" />
+    <Content Include="ScriptsSQL\script.sql" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -610,12 +616,26 @@
     <Compile Include="Docentes\ReporteAsist.aspx.designer.cs">
       <DependentUpon>ReporteAsist.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Estudiantes\Calificacion.aspx.cs">
+      <DependentUpon>Calificacion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Estudiantes\Calificacion.aspx.designer.cs">
+      <DependentUpon>Calificacion.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Estudiantes\Dashboard.aspx.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Estudiantes\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Estudiantes\Reporte.aspx.cs">
+      <DependentUpon>Reporte.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Estudiantes\Reporte.aspx.designer.cs">
+      <DependentUpon>Reporte.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

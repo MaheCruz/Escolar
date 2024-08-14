@@ -15,6 +15,15 @@ namespace Escolar.Docentes
     {
 
         /// <summary>
+        /// lblNombreDocente control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNombreDocente;
+
+        /// <summary>
         /// imgAsistencia control.
         /// </summary>
         /// <remarks>

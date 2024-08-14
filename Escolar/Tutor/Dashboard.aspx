@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="Escolar.Tutor.Dashboard" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <h2>Panel de control - Tutor</h2>
+    <h1>Panel de control - Tutor</h1>
+    <h2><asp:Label ID="lblNombreTutor" runat="server" Text=""></asp:Label></h2>
     <div style="display: flex; justify-content: center; gap: 50px;">
     <div style="text-align: center;"> 
         <asp:ImageButton ID="imgCalificaciones" runat="server" ImageUrl="~/Images/Calificaciones.png" Width="120px" Height="120px" PostBackUrl="Calificaciones.aspx" />

@@ -2,7 +2,8 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="container">
-        <h2>Panel de Control - Docentes</h2>
+        <h1>Panel de Control - Docentes</h1>
+        <h2><asp:Label ID="lblNombreDocente" runat="server" Text=""></asp:Label></h2>
         <div class="row text-center">
             <div class="col-md-3">
                 <asp:ImageButton ID="imgAsistencia" runat="server" ImageUrl="~/Images/Asistencia.png" Width="80px" Height="80px" PostBackUrl="~/Docentes/Asistencia.aspx" />

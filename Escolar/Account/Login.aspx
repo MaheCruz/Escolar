@@ -1,4 +1,4 @@
-﻿<%@ Page Title="INICIO SESION" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="Escolar.Account.Login" Async="true" %>
+﻿<%@ Page Title="INICIO SESIÓN" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="Escolar.Account.Login" Async="true" %>
 
 <%@ Register Src="~/Account/OpenAuthProviders.ascx" TagPrefix="uc" TagName="OpenAuthProviders" %>
 
@@ -16,7 +16,7 @@
                         </p>
                     </asp:PlaceHolder>
                     <div class="row">
-                        <asp:Label runat="server" AssociatedControlID="Email" CssClass="col-md-2 col-form-label">Correo electronico:</asp:Label>
+                        <asp:Label runat="server" AssociatedControlID="Email" CssClass="col-md-2 col-form-label">Correo electrónico:</asp:Label>
                         <div class="col-md-10">
                             <asp:TextBox runat="server" ID="Email" CssClass="form-control" TextMode="Email" />
                             <asp:RequiredFieldValidator runat="server" ControlToValidate="Email"
@@ -34,13 +34,13 @@
                         <div class="offset-md-2 col-md-10">
                             <div class="checkbox">
                                 <asp:CheckBox runat="server" ID="RememberMe" />
-                                <asp:Label runat="server" AssociatedControlID="RememberMe">Recordarme?</asp:Label>
+                                <asp:Label runat="server" AssociatedControlID="RememberMe">¿Recordarme?</asp:Label>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-offset-md-2 col-md-10">
-                            <asp:Button runat="server" OnClick="LogIn" Text="INICIAR SESION" CssClass="btn btn-outline-dark" />
+                            <asp:Button runat="server" OnClick="LogIn" Text="INICIAR SESIÓN" CssClass="btn btn-outline-dark" />
                         </div>
                     </div>
                 </div>
@@ -48,8 +48,8 @@
                     <asp:HyperLink runat="server" ID="RegisterHyperLink" ViewStateMode="Disabled">Registrarme</asp:HyperLink>
                 </p>
                 <p>
-                    <%-- Enable this once you have account confirmation enabled for password reset functionality
-                    <asp:HyperLink runat="server" ID="ForgotPasswordHyperLink" ViewStateMode="Disabled">Forgot your password?</asp:HyperLink>
+                    <%-- Habilita esto una vez que tengas habilitada la confirmación de cuenta para la funcionalidad de restablecimiento de contraseña
+                    <asp:HyperLink runat="server" ID="ForgotPasswordHyperLink" ViewStateMode="Disabled">¿Olvidaste tu contraseña?</asp:HyperLink>
                     --%>
                 </p>
             </section>
@@ -62,3 +62,4 @@
         </div>
     </main>
 </asp:Content>
+

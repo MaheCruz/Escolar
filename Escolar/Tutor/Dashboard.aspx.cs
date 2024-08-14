@@ -14,9 +14,50 @@ namespace Escolar.Tutor
             {
                 CargarPromediosPorHijo();
                 CargarReporteReciente();
+                CargarNombreTutor();
             }
         }
 
+        private void CargarNombreTutor()
+        {
+            string userId = User.Identity.GetUserId();
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT nombre + ' ' + paterno + ' ' + materno AS NombreCompleto FROM tutor WHERE idUsuario = @idUsuario";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@idUsuario", userId);
+
+                    try
+                    {
+                        connection.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        if (reader.Read())
+                        {
+                            lblNombreTutor.Text = reader["NombreCompleto"].ToString();
+                        }
+                        else
+                        {
+                            lblNombreTutor.Text = "Tutor no encontrado";
+                        }
+
+                        connection.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        lblNombreTutor.Text = "Error al cargar el nombre del tutor: " + ex.Message;
+                    }
+                }
+            }
+            else
+            {
+                lblNombreTutor.Text = "Usuario no encontrado";
+            }
+        }
         private void CargarPromediosPorHijo()
         {
             string tutorId = ObtenerIdTutor();
