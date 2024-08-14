@@ -23,8 +23,25 @@ namespace Escolar.Directivos
             {
                 ddlDocente.DataBind();
             }
+        private void LimpiarCampos()
+        {
+            // Limpiar los campos relacionados con Grupo
+            txtIdGrupo.Text = string.Empty;
+            txtNombreGrupo.Text = string.Empty;
+            txtDescripcionGrupo.Text = string.Empty;
+            txtInicioGrupo.Text = string.Empty;
+            txtFinGrupo.Text = string.Empty;
+            lblGrupoSeleccionado.Text = string.Empty;
 
-            protected void btnCrearGrupo_Click(object sender, EventArgs e)
+            // Limpiar los campos relacionados con Materia
+            txtIdMateria.Text = string.Empty;
+            txtNombreMateria.Text = string.Empty;
+            txtDescripcionMateria.Text = string.Empty;
+            ddlDocente.ClearSelection();
+            lblMateriaSeleccionada.Text = string.Empty;
+        }
+
+        protected void btnCrearGrupo_Click(object sender, EventArgs e)
             {
                 LimpiarMensajes();
                 try
@@ -52,6 +69,7 @@ namespace Escolar.Directivos
 
                     GVGrupos.DataBind();
                     MostrarMensajeExito("Grupo creado con éxito.");
+                    LimpiarCampos();
                 }
                 catch (Exception ex)
                 {
@@ -87,7 +105,8 @@ namespace Escolar.Directivos
 
                     GVGrupos.DataBind();
                     MostrarMensajeExito("Grupo modificado con éxito.");
-                }
+                    LimpiarCampos();
+            }
                 catch (Exception ex)
                 {
                     MostrarMensajeError($"Error al modificar el grupo: {ex.Message}");

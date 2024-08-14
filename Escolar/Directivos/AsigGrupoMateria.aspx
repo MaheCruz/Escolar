@@ -71,7 +71,7 @@
         <div class="row">
             <div class="col-md-6 form-group">
                 <h3>Crear Grupo</h3>
-                <asp:TextBox ID="txtIdGrupo" runat="server" CssClass="form-control" Placeholder="ID del Grupo" ReadOnly="true"></asp:TextBox>
+                <asp:TextBox ID="txtIdGrupo" runat="server" CssClass="form-control" Placeholder="ID del Grupo"></asp:TextBox>
                 <asp:TextBox ID="txtNombreGrupo" runat="server" CssClass="form-control" Placeholder="Nombre del Grupo"></asp:TextBox>
                 <asp:TextBox ID="txtDescripcionGrupo" runat="server" CssClass="form-control" Placeholder="Descripción"></asp:TextBox>
                 <asp:TextBox ID="txtInicioGrupo" runat="server" CssClass="form-control" Placeholder="Fecha de Inicio" TextMode="Date"></asp:TextBox>
@@ -102,7 +102,7 @@
         <div class="row mt-5">
             <div class="col-md-6 form-group">
                 <h3>Crear Materia</h3>
-                <asp:TextBox ID="txtIdMateria" runat="server" CssClass="form-control" Placeholder="ID de la Materia" ReadOnly="true"></asp:TextBox>
+                <asp:TextBox ID="txtIdMateria" runat="server" CssClass="form-control" Placeholder="ID de la Materia"></asp:TextBox>
                 <asp:TextBox ID="txtNombreMateria" runat="server" CssClass="form-control" Placeholder="Nombre de la Materia"></asp:TextBox>
                 <asp:TextBox ID="txtDescripcionMateria" runat="server" CssClass="form-control" Placeholder="Descripción"></asp:TextBox>
                 <asp:DropDownList ID="ddlDocente" runat="server" CssClass="form-control" DataSourceID="SqlDataSourceDocentes" DataTextField="nombre" DataValueField="idDocente"></asp:DropDownList>
