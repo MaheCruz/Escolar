@@ -95,7 +95,7 @@
                 <AlternatingRowStyle BackColor="White" />
                 <Columns>
                     <asp:CommandField ShowSelectButton="True" ButtonType="Button" />
-                    <asp:BoundField DataField="idUsuario" HeaderText="Nombre de Usuario" SortExpression="idUsuario" />
+                    <asp:BoundField DataField="NombreUsuario" HeaderText="Nombre de Usuario" SortExpression="NombreUsuario" />
                     <asp:BoundField DataField="matricula" HeaderText="Matrícula" SortExpression="matricula" />
                     <asp:BoundField DataField="nombre" HeaderText="Nombre" SortExpression="nombre" />
                     <asp:BoundField DataField="paterno" HeaderText="Paterno" SortExpression="paterno" />
@@ -105,7 +105,6 @@
                     <asp:BoundField DataField="direccion" HeaderText="Dirección" SortExpression="direccion" />
                     <asp:BoundField DataField="tipoSangre" HeaderText="Tipo de Sangre" SortExpression="tipoSangre" />
                     <asp:BoundField DataField="promGeneral" HeaderText="Promedio General" SortExpression="promGeneral" />
-                    <asp:BoundField DataField="idTutor" HeaderText="ID Tutor" SortExpression="idTutor" Visible="False" />
                 </Columns>
             </asp:GridView>
             <asp:SqlDataSource ID="SqlDataSourceEstudiantes" runat="server"

@@ -21,9 +21,30 @@ namespace Escolar.Docentes
             if (!IsPostBack)
             {
                 LoadMaterias();
+                EjecutarProcedimientoCalcularPromedio();
             }
         }
+        private void EjecutarProcedimientoCalcularPromedio()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand("CalcularPromedioGeneralPorEstudiante", connection);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    // Manejo de errores
+                    Response.Write("Error: " + ex.Message);
+                }
+            }
+        }
         private void LoadMaterias()
         {
             using (SqlConnection con = new SqlConnection(connectionString))

@@ -58,5 +58,23 @@ namespace Escolar.Directivos
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPromedioAsistencias;
+
+        /// <summary>
+        /// imgGraficaAsistencia control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgGraficaAsistencia;
+
+        /// <summary>
+        /// imgGraficaCalificaciones control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgGraficaCalificaciones;
     }
 }

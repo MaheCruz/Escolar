@@ -114,6 +114,12 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+    <div class="col-md-12">
+        <asp:Image ID="imgGraficaAsistencia" runat="server" />
+        <asp:Image ID="imgGraficaCalificaciones" runat="server" />
+    </div>
+</div>
 
         <div class="shortcut-container">
             <div class="shortcut" onclick="window.location.href='AsigEstudianteGrupo.aspx'">
