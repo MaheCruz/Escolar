@@ -59,7 +59,7 @@
         }
 
     </style>
-    <h2>Calificaciones de Estudiantes</h2>
+    <h2>Calificaciones de Tutorado(s)</h2>
     <asp:DropDownList ID="ddlEstudiantes" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlEstudiantes_SelectedIndexChanged">
         <asp:ListItem Value="" Text="Selecciona un estudiante" />
     </asp:DropDownList><br /><br />

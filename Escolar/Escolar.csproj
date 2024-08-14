@@ -330,6 +330,7 @@
     <Content Include="Account\Web.config" />
     <Content Include="Directivos\Web.config" />
     <Content Include="Docentes\Web.config" />
+    <Content Include="Estudiantes\Web.config" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
@@ -672,6 +673,7 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.7.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.7.0.min.map" />
+    <Content Include="Tutor\Web.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
