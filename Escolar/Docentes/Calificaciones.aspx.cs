@@ -9,6 +9,7 @@ using iTextSharp.text.pdf;
 using System.IO;
 using System.Web.UI;
 using System.Web;
+using System.Collections.Generic;
 
 namespace Escolar.Docentes
 {
@@ -20,11 +21,72 @@ namespace Escolar.Docentes
         {
             if (!IsPostBack)
             {
+                EjecutarCrearCalificacionesPorMateria();  // Ejecuta el procedimiento almacenado
                 LoadMaterias();
                 EjecutarProcedimientoCalcularPromedio();
+                }
             }
-        }
-        private void EjecutarProcedimientoCalcularPromedio()
+
+            private void EjecutarCrearCalificacionesPorMateria()
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    try
+                    {
+                        connection.Open();
+
+                        // Supongamos que tienes un método para obtener el idMateria
+                        // y que el procedimiento debe ejecutarse para todas las materias disponibles
+                        foreach (var idMateria in ObtenerListaDeMaterias())
+                        {
+                            SqlCommand command = new SqlCommand("CrearCalificacionesPorMateria", connection);
+                            command.CommandType = CommandType.StoredProcedure;
+
+                            // Pasar el parámetro al procedimiento almacenado
+                            command.Parameters.AddWithValue("@idMateria", idMateria);
+
+                            command.ExecuteNonQuery();  // Ejecutar el procedimiento almacenado
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Manejo de errores
+                        Response.Write("Error al crear calificaciones: " + ex.Message);
+                    }
+                }
+            }
+
+            private IEnumerable<string> ObtenerListaDeMaterias()
+            {
+                // Este método debería obtener la lista de idMaterias para las cuales deseas ejecutar el procedimiento
+                List<string> materias = new List<string>();
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT idMateria FROM materia";
+                    SqlCommand cmd = new SqlCommand(query, connection);
+
+                    try
+                    {
+                        connection.Open();
+                        SqlDataReader reader = cmd.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            materias.Add(reader["idMateria"].ToString());
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Response.Write("Error al obtener materias: " + ex.Message);
+                    }
+                }
+
+                return materias;
+            }
+    private void EjecutarProcedimientoCalcularPromedio()
         {
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
