@@ -63,7 +63,7 @@
     <asp:DropDownList ID="ddlEstudiantes" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlEstudiantes_SelectedIndexChanged">
         <asp:ListItem Value="" Text="Selecciona un estudiante" />
     </asp:DropDownList><br /><br />
-    <asp:Label ID="lblPromedioGeneral" runat="server" Text="Promedio General: N/A" Font-Bold="True" />
+    <asp:Label ID="lblPromedioGeneral" runat="server" Text="Promedio General : N/A" Font-Bold="True" />
     <br /><br/>
     <asp:Button ID="btnRecargar" runat="server" Text="Recargar" CssClass="btn btn-primary" OnClick="btnRecargar_Click" />
     <br /><br />
