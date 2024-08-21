@@ -102,7 +102,7 @@ namespace Escolar.Estudiantes
             }
             else
             {
-                lblNoReportes.Text = "No se encontró el ID del usuario en la sesión.";
+                lblNoReportes.Text = "No se encontró el ID del usuario en la sesión."; //mensaje de error
                 lblNoReportes.Visible = true;
                 return string.Empty;
             }
