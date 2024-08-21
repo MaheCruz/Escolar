@@ -6,7 +6,7 @@
         }
 
         h4.text-info {
-            color: #5bc0de;
+            color:       #5bc0de;
         }
 
         .btn-success {
