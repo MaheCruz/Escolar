@@ -92,7 +92,7 @@ namespace Escolar.Tutor
 
                     connection.Close();
                 }
-                catch (Exception ex)
+                catch (Exception ex) //Mensaje de error al cargar las calificaciones
                 {
                     lblError.Text = "Error al cargar calificaciones: " + ex.Message;
                 }
