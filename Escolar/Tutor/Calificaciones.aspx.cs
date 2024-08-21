@@ -123,7 +123,7 @@ namespace Escolar.Tutor
             }
         }
 
-        private string ObtenerIdTutor()
+        private string ObtenerIdTutor() //Metodo obtener id del tutor
         {
             string userId = User.Identity.GetUserId();
 
