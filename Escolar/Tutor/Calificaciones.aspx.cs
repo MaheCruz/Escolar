@@ -167,7 +167,7 @@ namespace Escolar.Tutor
             }
         }
 
-        protected void btnRecargar_Click(object sender, EventArgs e)
+        protected void btnRecargar_Click(object sender, EventArgs e) //Boton para recargar
         {
             if (ddlEstudiantes.SelectedValue != "")
             {
