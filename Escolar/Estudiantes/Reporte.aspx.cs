@@ -24,7 +24,7 @@ namespace Escolar.Estudiantes
                 MostrarReportes(estudianteId);
             }
         }
-
+        //Metodo mostrar reportes
         private void MostrarReportes(string matricula)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
