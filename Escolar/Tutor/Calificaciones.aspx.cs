@@ -62,7 +62,7 @@ namespace Escolar.Tutor
                 CalcularPromedioGeneral(ddlEstudiantes.SelectedValue);
             }
         }
-
+        //Metodo para insertar las calificaciones de los estudiantes
         private void CargarCalificacionesEstudiante(string matricula)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -174,6 +174,11 @@ namespace Escolar.Tutor
                 CargarCalificacionesEstudiante(ddlEstudiantes.SelectedValue);
                 CalcularPromedioGeneral(ddlEstudiantes.SelectedValue);
             }
+        }
+
+        protected System.Void btnRecargar_Click(System.Object sender, System.EventArgs e)
+        {
+
         }
     }
 }

@@ -135,5 +135,10 @@ namespace Escolar.Directivos
             Response.Write(pdfDoc);
             Response.End();
         }
+
+        protected System.Void ddlMateria_SelectedIndexChanged()
+        {
+
+        }
     }
 }
