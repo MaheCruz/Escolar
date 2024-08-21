@@ -17,7 +17,7 @@ namespace Escolar.Estudiantes
             }
         }
 
-    private void CargarDatosEstudiante()
+    private void CargarDatosEstudiante() //metodo para insertar los datos del estudiante
             {
                 string userId = User.Identity.GetUserId();
                 if (!string.IsNullOrEmpty(userId))
@@ -58,7 +58,7 @@ namespace Escolar.Estudiantes
                     }
                 }
             }
-    private void CargarGrupoYPromedio()
+    private void CargarGrupoYPromedio() //Metodo para cargar grupo y promedio
         {
             string estudianteId = ObtenerIdEstudiante();
 
